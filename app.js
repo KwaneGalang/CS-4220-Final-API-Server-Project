@@ -1,7 +1,7 @@
 import { select } from '@inquirer/prompts';
 import fs from 'fs';
-import {searchByKeyword, getDetailsById} from './api.js';
-import {showKeywordHistory} from './history.js';
+import {searchByKeyword, getDetailsById} from './services/api.js';
+import {showKeywordHistory} from './routes/history.js';
 
 // A function to print the detailed information of a movie
 const printMovieDetails = (movie) => {
