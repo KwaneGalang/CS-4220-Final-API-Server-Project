@@ -1,35 +1,32 @@
-import fs from "fs";
-import inquirer from "inquirer";
+import express from "express";
+import db from "../services/db.js";
 
-export async function showKeywordHistory() {
-  try {
-    // Read history file
-    const data = fs.readFileSync("./search_history.json", "utf-8");
-    const keywords = JSON.parse(data);
+const router = express.Router();
 
-    // Build list with "Exit" as the frist choice
-    const choices = ["Exit", ...keywords];
+router.get("/", async (req, res) => {
+  const { type } = req.query;
 
-    // Prompt given to the user to see what they want to do
-    const answer = await inquirer.prompt([
-      {
-        type: "list",
-        name: "selectedKeyword",
-        message: "Select a keyword from your search history:",
-        choices: choices
-      }
-    ]);
-
-    // If user chooses Exit, return null so app.js can stop
-    if (answer.selectedKeyword === "Exit") {
-      return null;
-    }
-
-    // Return the keyword so app.js can run the search flow
-    return answer.selectedKeyword;
-
-  } catch (error) {
-    console.error("Error reading search history:", error.message);
-    return null;
+  // Validate query parameter
+  if (!type) {
+    return res.status(400).json({ error: "Query parameter 'type' is required" });
   }
-}
+
+  if (type !== "keywords") {
+    return res.status(400).json({ error: "Invalid type. Only 'keywords' is allowed." });
+  }
+
+  try {
+    const collection = db.getCollection("SearchHistoryKeyword");
+
+    const results = await collection
+      .find({}, { projection: { _id: 0 } })
+      .toArray();
+
+    res.json({ keywords: results });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to retrieve history" });
+  }
+});
+
+export default router;
+
