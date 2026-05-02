@@ -22,11 +22,25 @@ router.get("/", async (req, res) => {
       .find({}, { projection: { _id: 0 } })
       .toArray();
 
+    //DEFAULTS VALUES
+    if (results.length === 0) {
+      return res.json({
+        keywords: [
+          { keyword: "batman" },
+          { keyword: "spiderman" },
+          { keyword: "avatar" }
+        ]
+      });
+    }
+
     res.json({ keywords: results });
+
   } catch (err) {
+    console.error("HISTORY ERROR:", err.message);
     res.status(500).json({ error: "Failed to retrieve history" });
   }
 });
 
 export default router;
+
 
