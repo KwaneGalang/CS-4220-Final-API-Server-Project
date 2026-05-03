@@ -28,7 +28,13 @@ router.get('/', async (req, res) => {
         }));
 
 
-        // Saves unique search keywords to the MongoDB SearchHistoryKeyword collection (todo)
+        // Saves unique search keywords to the MongoDB SearchHistoryKeyword collection (todo) 
+
+        await db.collection('SearchHistoryKeyword').updateOne(
+    { keyword: keyword.toLowerCase() },
+    { $setOnInsert: { keyword: keyword.toLowerCase(), createdAt: new Date() } },
+    { upsert: true }
+);
 
 
         // Returns the JSON response
