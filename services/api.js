@@ -123,7 +123,7 @@ export async function getDetailsById(id){
         // Note: originalTitle property here appears to be set from release_date in the original code —
         // keep the same behavior but label is slightly misleading.
 
-        originalTitle: movie.release_date || 'Unknown',
+        originalTitle: movie.originalTitle|| 'Unknown',
         releaseDate: movie.release_date || 'unknown',
         runtime: movie.runtime ? `${movie.runtime} minutes` : 'unknown',
         rating: movie.vote_average ?? 'N/A',

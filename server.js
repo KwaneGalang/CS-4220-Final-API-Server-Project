@@ -49,6 +49,8 @@ const PORT = process.env.PORT || 4545; // Initializing a port number for server 
 // The Middleware to parse JSON bodies from the get requests, allowing server to know and process data sent in request bodies.
 app.use(express.json());
 
+await db.connect(); // Connecting to the database before starting the server, ensuring that the server only starts if the database connection is successful.
+
 // A Get request to the root server endpoint, returning a welcome message to the user when first accessing the API.
 app.get('/', (req, res) => {
     res.send('Welcome to the Movie Search API Application!');
