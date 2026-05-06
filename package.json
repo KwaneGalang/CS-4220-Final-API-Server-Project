@@ -5,9 +5,9 @@
   "license": "ISC",
   "author": "Kwane Galang, Alan Mai, Daniel Gomez, Nikole Cabrera, Marco Rodriguez",
   "type": "module",
-  "main": "cli.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx nodemon server.js"
   },
   "dependencies": {
     "axios": "^1.15.2",
@@ -16,5 +16,8 @@
     "inquirer": "^13.4.2",
     "mongodb": "^7.2.0",
     "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
