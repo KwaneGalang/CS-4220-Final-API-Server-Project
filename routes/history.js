@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
       });
     }
 
-    res.json({ keywords: results });
+    res.json({ keywords: cleaned });
 
   } catch (err) {
     console.error("HISTORY ERROR:", err.message);

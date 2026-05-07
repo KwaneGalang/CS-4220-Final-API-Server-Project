@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
             });
         }
 
-        // "Interacts with api.js to perform the search by keyword"
+        // Interacts with api.js to perform the search by keyword
         const movies = await searchByKeyword(keyword);
 
         // Creates the response (display & identifier)
@@ -26,10 +26,23 @@ router.get('/', async (req, res) => {
             identifier: movie.id
         }));
 
-        await db.insert('SearchHistoryKeyword',{
-            keyword: keyword.toLowerCase(),
-            createdAt: new Date()
+        // Convert the keyword to lowercase
+        const normalKeyword = keyword.toLowerCase();
+
+        // Locate the keyword in the DB
+        const cursor = await db.find('SearchHistoryKeyword', {
+            keyword: normalKeyword
         });
+
+        const existingKeyword = await cursor.next();
+
+        // Add it to the DB if it doesn't already exist
+        if (!existingKeyword) {
+            await db.insert('SearchHistoryKeyword', {
+                keyword: normalKeyword,
+                createdAt: new Date()
+            });
+        }
 
         res.json(formatted);
     } catch (error) {
@@ -60,22 +73,3 @@ router.get('/:id', async (req, res) => {
 });
 
 export default router;
-
-
-
-    //     // Saves unique search keywords to the MongoDB SearchHistoryKeyword collection (todo) 
-
-    //     await db.collection('SearchHistoryKeyword').updateOne(
-    //         { keyword: keyword.toLowerCase() },
-    //         { $setOnInsert: { keyword: keyword.toLowerCase(), createdAt: new Date() } },
-    //         { upsert: true }
-    //     );
-
-
-    //     // Returns the JSON response
-    //     res.json(formatted);
-
-    // } catch (error) {
-    //     res.status(500).json({ error: 'Server error' });
-    // }
-//})
