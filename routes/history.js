@@ -16,11 +16,16 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    const collection = db.getCollection("SearchHistoryKeyword");
+    // db.find() returns a CURSOR, not an array
+    const cursor = await db.find("SearchHistoryKeyword", {});
 
-    const results = await collection
-      .find({}, { projection: { _id: 0 } })
-      .toArray();
+    // Convert cursor → array manually
+    const results = await cursor.toArray();
+
+    // Remove _id manually
+    const cleaned = results.map(item => ({
+      keyword: item.keyword
+    }));
 
     //DEFAULTS VALUES
     if (results.length === 0) {
