@@ -6,6 +6,15 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const { type } = req.query;
 
+// HOW TO GET HISTORY:
+// Send a GET request to:  http://localhost:4545/history?type=keywords
+// - The "type" query parameter is REQUIRED.
+// - Example: type=keywords returns the list of saved search keywords.
+// Response example:
+// { "keywords": ["batman", "spiderman", "godzilla"] }
+// http://localhost:4545/history?type=movies
+// http://localhost:4545/history?type=keywords
+
   // Validate query parameter
   if (!type) {
     return res.status(400).json({ error: "Query parameter 'type' is required" });
