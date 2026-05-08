@@ -4,10 +4,10 @@ import db from '../services/db.js';
 
 const router = express.Router()
 
-// GET /movies?keyword=<keyword>
+// GET /movies?keyword=batman
 router.get('/', async (req, res) => {
     try {
-        // "Uses a query parameter to accept the keyword"
+        // Uses a query parameter to accept the keyword
         const { keyword } = req.query;
 
         // Validation
@@ -25,6 +25,8 @@ router.get('/', async (req, res) => {
             display: `${movie.title} (${movie.releaseDate})`,
             identifier: movie.id
         }));
+
+        // -----ADDING IT TO DB-----
 
         // Convert the keyword to lowercase
         const normalKeyword = keyword.toLowerCase();
